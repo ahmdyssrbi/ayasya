@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Passcode</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="screen">
+    <section class="gate" aria-labelledby="gate-title">
+      <p class="flower-line">a little gift</p>
+      <h1 id="gate-title">For You</h1>
+      <p>Enter the little date-code to open the garden.</p>
+
+      <form id="passcode-form">
+        <label for="passcode" class="sr-only">Passcode</label>
+        <input id="passcode" name="passcode" inputmode="numeric" autocomplete="off" placeholder="Passcode" required>
+        <button type="submit">Open</button>
+        <p class="error" id="error" aria-live="polite"></p>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    const passcode = "23012023";
+    const form = document.querySelector("#passcode-form");
+    const input = document.querySelector("#passcode");
+    const error = document.querySelector("#error");
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      if (input.value.trim() === passcode) {
+        window.location.href = "dashboard.html";
+        return;
+      }
+
+      error.textContent = "Wrong passcode. Try again my love.";
+      input.select();
+    });
+  </script>
+</body>
+</html>
