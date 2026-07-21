@@ -1,11 +1,11 @@
 :root {
-  --ink: #4d2434;
-  --rose: #c84668;
-  --wine: #7d2947;
-  --petal: #fff1f5;
-  --cream: #fffaf7;
-  --leaf: #4f7a58;
-  --gold: #d7a64a;
+  --ink: #5b3346;
+  --rose: #e56f95;
+  --wine: #a33a63;
+  --petal: #ffd7e4;
+  --glass: rgba(255, 255, 255, 0.42);
+  --glass-line: rgba(255, 255, 255, 0.66);
+  --glass-shadow: 0 18px 50px rgba(163, 58, 99, 0.18);
 }
 
 * {
@@ -18,23 +18,11 @@ body {
   color: var(--ink);
   font-family: Georgia, "Times New Roman", serif;
   background:
-    radial-gradient(circle at 12% 18%, rgba(255, 191, 204, 0.58), transparent 24rem),
-    radial-gradient(circle at 86% 12%, rgba(255, 224, 235, 0.8), transparent 20rem),
-    linear-gradient(135deg, #fff8f2 0%, #ffe6ee 52%, #fffaf7 100%);
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.32;
-  background-image:
-    radial-gradient(circle at 12px 10px, #e86f8e 0 5px, transparent 6px),
-    radial-gradient(circle at 28px 22px, #f3a6b9 0 6px, transparent 7px),
-    radial-gradient(circle at 22px 38px, #f7c9d3 0 4px, transparent 5px),
-    radial-gradient(circle at 40px 42px, #7fa06c 0 3px, transparent 4px);
-  background-size: 82px 82px;
+    radial-gradient(circle at 14% 16%, rgba(255, 176, 200, 0.7), transparent 22rem),
+    radial-gradient(circle at 84% 10%, rgba(255, 214, 231, 0.85), transparent 20rem),
+    radial-gradient(circle at 50% 100%, rgba(255, 236, 244, 0.9), transparent 24rem),
+    linear-gradient(150deg, #fff6fa 0%, #ffe4ef 55%, #fff9f6 100%);
+  background-attachment: fixed;
 }
 
 a {
@@ -46,7 +34,7 @@ a {
   width: 1px;
   height: 1px;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
 }
 
 .screen {
@@ -58,74 +46,134 @@ a {
   padding: 32px 18px;
 }
 
+/* Drifting petals — 3 elements, transform/opacity only */
+.screen::before,
+.screen::after {
+  content: "\1F338";
+  position: fixed;
+  top: -8vh;
+  font-size: 26px;
+  opacity: 0.55;
+  pointer-events: none;
+  animation: drift 16s linear infinite;
+}
+
+.screen::before {
+  left: 16%;
+}
+
+.screen::after {
+  left: 78%;
+  font-size: 20px;
+  animation-duration: 21s;
+  animation-delay: -7s;
+}
+
+@keyframes drift {
+  from {
+    transform: translate3d(0, -10vh, 0) rotate(0deg);
+  }
+
+  to {
+    transform: translate3d(40px, 110vh, 0) rotate(240deg);
+  }
+}
+
 .gate,
 .dashboard {
   width: min(920px, 100%);
-  border: 1px solid rgba(200, 70, 104, 0.22);
-  border-radius: 8px;
-  background: rgba(255, 250, 247, 0.9);
-  box-shadow: 0 24px 70px rgba(125, 41, 71, 0.18);
+  border: 1px solid var(--glass-line);
+  border-radius: 22px;
+  background: var(--glass);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.7);
   overflow: hidden;
 }
 
 .gate {
-  max-width: 460px;
-  padding: 34px 28px;
+  max-width: 440px;
+  padding: 40px 30px;
   text-align: center;
 }
 
 .flower-line {
+  display: inline-block;
   margin: 0 0 14px;
   color: var(--rose);
-  font-size: 24px;
-  letter-spacing: 0;
+  font-size: 40px;
+  transform-origin: 50% 90%;
+  animation: sway 4s ease-in-out infinite;
+}
+
+@keyframes sway {
+
+  0%,
+  100% {
+    transform: rotate(-6deg) scale(1);
+  }
+
+  50% {
+    transform: rotate(6deg) scale(1.08);
+  }
 }
 
 h1 {
   margin: 0;
   color: var(--wine);
-  font-size: clamp(34px, 8vw, 66px);
-  line-height: 0.98;
-  letter-spacing: 0;
+  font-size: clamp(34px, 8vw, 62px);
+  line-height: 1;
 }
 
-.gate p,
-.hero p,
-.note p {
-  font-size: 18px;
+.gate p {
+  font-size: 17px;
   line-height: 1.55;
 }
 
 form {
   display: grid;
   gap: 12px;
-  margin-top: 24px;
+  margin-top: 26px;
 }
 
 input {
   width: 100%;
-  border: 1px solid rgba(125, 41, 71, 0.25);
-  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: 14px;
   padding: 14px 16px;
   color: var(--ink);
   font: 20px/1.2 Arial, sans-serif;
   text-align: center;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.55);
+  transition: box-shadow 0.25s, background 0.25s;
+}
+
+input:focus {
+  outline: 0;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 0 4px rgba(229, 111, 149, 0.22);
 }
 
 button {
-  border: 0;
-  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 14px;
   padding: 14px 18px;
   color: #fff;
   font: 700 16px/1 Arial, sans-serif;
-  background: var(--rose);
+  background: linear-gradient(135deg, #f58cae, #d1487a);
+  box-shadow: 0 10px 24px rgba(209, 72, 122, 0.32);
   cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 button:hover,
 button:focus-visible {
-  background: var(--wine);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(209, 72, 122, 0.42);
+}
+
+button:active {
+  transform: translateY(0);
 }
 
 .error {
@@ -135,71 +183,12 @@ button:focus-visible {
   font: 14px/1.4 Arial, sans-serif;
 }
 
-.dashboard {
-  display: grid;
-}
+@media (prefers-reduced-motion: reduce) {
 
-.hero {
-  min-height: 420px;
-  display: grid;
-  align-content: end;
-  padding: clamp(28px, 6vw, 62px);
-  color: #fff;
-  background:
-    linear-gradient(to top, rgba(77, 36, 52, 0.86), rgba(77, 36, 52, 0.12)),
-    url("https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=1600&q=80") center/cover;
-}
-
-.hero h1 {
-  max-width: 760px;
-  color: #fff;
-  text-shadow: 0 2px 22px rgba(77, 36, 52, 0.55);
-}
-
-.hero p {
-  max-width: 650px;
-  margin: 18px 0 0;
-}
-
-.content {
-  display: grid;
-  gap: 18px;
-  padding: clamp(22px, 5vw, 46px);
-}
-
-.tiles {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-}
-
-.tile,
-.note {
-  border: 1px solid rgba(200, 70, 104, 0.18);
-  border-radius: 8px;
-  padding: 18px;
-  background: #fff;
-}
-
-.tile strong {
-  display: block;
-  margin-bottom: 8px;
-  color: var(--rose);
-  font: 700 15px/1 Arial, sans-serif;
-  text-transform: uppercase;
-}
-
-.tile span,
-.note p {
-  margin: 0;
-}
-
-@media (max-width: 720px) {
-  .tiles {
-    grid-template-columns: 1fr;
-  }
-
-  .hero {
-    min-height: 360px;
+  *,
+  .screen::before,
+  .screen::after {
+    animation: none !important;
+    transition: none !important;
   }
 }
